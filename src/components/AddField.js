@@ -4,12 +4,12 @@ import AddIcon from "@mui/icons-material/Add";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-export const AddField = ({ onAddTusk }) => {
+export const AddField = ({ onAddTask }) => {
   const [inputValue, setInputValue] = React.useState("");
   const [checked, setChecked] = React.useState(false);
 
   function handle() {
-    onAddTusk(inputValue, checked);
+    onAddTask(inputValue, checked);
     setInputValue("");
     setChecked(false);
   }
@@ -18,7 +18,7 @@ export const AddField = ({ onAddTusk }) => {
     <div className="field">
       <Checkbox
         checked={checked}
-        onChange={(e) => setChecked(e.target.value)}
+        onChange={(e) => setChecked(e.target.checked)}
         className="checkbox"
         icon={<RadioButtonUncheckedIcon />}
         checkedIcon={<CheckCircleIcon />}
