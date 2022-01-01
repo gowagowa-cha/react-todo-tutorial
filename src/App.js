@@ -4,7 +4,7 @@ import { AddField } from "./components/AddField";
 import { Item } from "./components/Item";
 
 function reducer(state, action) {
-  if (action.type === "ADD_TUSK") {
+  if (action.type === "ADD_TASK") {
     return [
       ...state,
       {
@@ -28,7 +28,7 @@ function App() {
 
   const onAddTusk = (text, checked) => {
     dispatch({
-      type: "ADD_TUSK",
+      type: "ADD_TASK",
       payload: {
         text,
         checked,
