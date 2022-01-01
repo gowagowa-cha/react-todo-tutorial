@@ -4,36 +4,57 @@ import { AddField } from "./components/AddField";
 import { Item } from "./components/Item";
 
 function reducer(state, action) {
-  if (action.type === "ADD_TUSK") {
-    return [
+  if (action.type === "ADD_TASK") {
+    return {
       ...state,
-      {
-        id: Date.now() + 1,
-        text: action.payload.text,
-        completed: action.payload.checked,
-      },
-    ];
+      tasks: [
+        ...state.tasks,
+        {
+          id: Date.now() + 1,
+          text: action.payload.text,
+          completed: action.payload.checked,
+        },
+      ],
+    };
+  }
+
+  if (action.type === "REMOVE_TASK") {
+    return {
+      ...state,
+      tasks: state.tasks.filter((el) => el.id !== action.payload),
+    };
   }
   return state;
 }
 
 function App() {
-  const [state, dispatch] = React.useReducer(reducer, [
-    {
-      id: 1,
-      text: "Task-1",
-      completed: true,
-    },
-  ]);
+  const [state, dispatch] = React.useReducer(reducer, {
+    tasks: [
+      {
+        id: 1,
+        text: "Task-1",
+        completed: true,
+      },
+    ],
+  });
 
-  const onAddTusk = (text, checked) => {
+  const onAddTask = (text, checked) => {
     dispatch({
-      type: "ADD_TUSK",
+      type: "ADD_TASK",
       payload: {
         text,
         checked,
       },
     });
+  };
+
+  const removeTask = (id) => {
+    if (window.confirm("Удалить?")) {
+      dispatch({
+        type: "REMOVE_TASK",
+        payload: id,
+      });
+    }
   };
 
   return (
@@ -42,7 +63,7 @@ function App() {
         <Paper className="header" elevation={0}>
           <h4>Список задач</h4>
         </Paper>
-        <AddField onAddTusk={onAddTusk} />
+        <AddField onAddTask={onAddTask} />
         <Divider />
         <Tabs value={0}>
           <Tab label="Все" />
@@ -51,8 +72,14 @@ function App() {
         </Tabs>
         <Divider />
         <List>
-          {state.map((el) => (
-            <Item key={el.id} text={el.text} />
+          {state.tasks.map((el) => (
+            <Item
+              key={el.id}
+              text={el.text}
+              completed={el.completed}
+              removeTask={removeTask}
+              id={el.id}
+            />
           ))}
         </List>
         <Divider />
